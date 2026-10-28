@@ -2,8 +2,31 @@
 This repository contains the raw data and machine learning codes used in our paper entitled ***"Uncovering the Influence of Modifier Redox Potential on CO2 Reduction through Combined Data-driven Machine Learning and Hypothesis-driven Experimentation"***
 
 __Codes__
-The following Jupyter notebooks contain the codes used for this study:  
+***Use the ML_reproducibility_clean_20261027.zip to reproduce.***   
+Please use **`ML_reproducibility_clean_20261027.zip`** to reproduce the machine-learning regression, candidate prediction, SHAP analysis, and molecular mapping workflows associated with the manuscript. The package contains the corresponding CSV inputs, updated Python scripts, dependency versions, and usage instructions. Outputs saved in the earlier notebooks include development and debugging runs and should not be treated as reference results for the final manuscript.
 
+The updated package resolves input-format, indexing, file-path, and prediction-export inconsistencies. Experimental training targets and unmeasured candidates are stored separately, with explicit molecule-to-descriptor correspondence. Candidate predictions are calculated as the mean of 160 models, consistent with the historical Table S6 procedure documented in our contemporaneous records.
+
+To run the package, extract the ZIP and open PowerShell in the directory containing `run_regression.py`. The workflow has been tested with **Python 3.8.8 on Windows x64**. Create an isolated environment, install the supplied dependencies, and run:
+
+```powershell
+py -3.8 -m venv .venv
+.venv\Scripts\python -m pip install -r requirements.txt
+.venv\Scripts\python run_regression.py --jobs 2
+.venv\Scripts\python plot_regression.py
+```
+
+These commands run the 93-, 108-, and 127-molecule regression stages and generate predictions, evaluation metrics, SHAP results, and figures. Results are saved in `outputs/replay/` and `outputs/regression_figures/`. Molecular mapping can be run separately:
+
+```powershell
+.venv\Scripts\python run_molecular_map.py
+```
+
+The package retains the saved holdout memberships and historical selected-feature combinations and fixes the model seed for repeatable execution. Complete historical training-row orders were not retained, so exact agreement with every published prediction is not guaranteed. The regenerated results should be interpreted as reproduction runs, while the manuscript and supplementary tables remain the record of the original results.
+
+See the README inside the ZIP for stage-specific commands and optional feature selection. This package covers the supplied regression and molecular mapping workflows; classification/Bayesian programs and quantum-chemical descriptor generation are outside its scope.
+
+***Below is old backup***   
 **1.Comprehensive Molecular Featurizer V5.0.ipynb**: Generates the feature matrix, including Local Functional Group Fingerprint (LoFFi) and LoFFi-MOE features developed by Yuming Su and Yangtao Chen. An auxiliary file, "loffi.txt," is required for the precise and accurate definition of each functional group in SMARTS format.  
 **2.Classification-Multimodel_classifier.ipynb**: Initial machine learning step containing 8 different models.  
 **3.Classification-GBCT-RecursiveFeat.ipynb**: Implements recursive feature selection using the method provided by Scikit-learn.  
